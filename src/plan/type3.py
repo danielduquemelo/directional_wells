@@ -2,14 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import OrderedDict
 from pprint import pprint
+from .plan_utils import getKOPFromBUR
 
-def getKOPFromBUR(reach, TVD, BUR):
-    BUR_rad = np.deg2rad(BUR) / 30
-    R = 1 / BUR_rad  # Radius of curvature (m)
-    delta_D = R - reach
-    theta = np.arccos(delta_D/R)  # Central angle (radians)
-    KOP = TVD - R * np.sin(theta)
-    return KOP
+
 
 class WellTypeIII:
     def __init__(self, TVD, KOP, BUR, reach):
