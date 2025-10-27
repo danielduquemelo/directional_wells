@@ -39,7 +39,7 @@ def calc_segment(md1, inc1, azim1, md2, inc2, azim2):
           np.sin(inc2)*np.sin(azim2))*RF
     dz = (np.cos(inc1)+np.cos(inc2))*RF
     d_reach = np.sqrt(dx**2 + dy**2)
-    return dx, dy, dz, d_reach
+    return [dx, dy, dz, d_reach]
 
 
 # def min_curvature_survey(md, inc, azim):

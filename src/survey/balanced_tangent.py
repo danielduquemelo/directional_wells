@@ -25,7 +25,6 @@ def calc_segment(md1, inc1, azim1, md2, inc2, azim2):
         A list with the lengths northing, easting, vertical and reach segment
     """
     half_dMD = 0.5 * (md2-md1)
-
     d_north = half_dMD * (np.sin(inc1) * np.cos(azim1) + np.sin(inc2) * np.cos(azim2))
     d_east = half_dMD *  (np.sin(inc1) * np.sin(azim1) + np.sin(inc2) * np.sin(azim2))
     d_vertical = half_dMD * (np.cos(inc1) + np.cos(inc2))
