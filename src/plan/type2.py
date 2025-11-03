@@ -7,17 +7,17 @@ class WellTypeII:
     def __init__(self, TVD, KOP, BUR, reach, DOR, EOD):
         self.TVD = TVD  # Final vertical depth
         self.KOP = KOP  # Kick-off point
-        self.BUR = BUR  # Build-up rate (deg/30m)
+        self.BUR = np.deg2rad(BUR)  # Build-up rate (deg/30m)
         self.reach = reach  # Target horizontal displacement
-        self.DOR = DOR  # Drop-off rate (deg/30m)
+        self.DOR = np.deg2rad(DOR)  # Drop-off rate (deg/30m)
         self.EOD = EOD  # End of drop-off (TVD)
 
     def calculate(self):
         # Build-up section
-        self.BUR_rad = np.deg2rad(self.BUR) / 30
+        self.BUR_rad = self.BUR / 30
         self.R = 1 / self.BUR_rad  # Radius of curvature (m)
         # Drop-off section
-        self.DOR_rad = np.deg2rad(self.DOR) / 30
+        self.DOR_rad = self.DOR / 30
         self.R_drop = 1 / self.DOR_rad  # Drop-off radius (m)
         sum_R = self.R + self.R_drop
         dV = self.EOD - self.KOP
@@ -94,7 +94,7 @@ class WellTypeII:
             ("Build-up", self.build1),
             ("Slant section", self.slant),
             ("Drop-off", self.drop1),
-            ("Final", self.slant)
+            ("Final", self.final)
         ])
 
     def printResults(self):

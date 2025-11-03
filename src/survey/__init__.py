@@ -2,8 +2,9 @@ from . import (tangent, balanced_tangent, curvature_radius, mean_angle,
                min_curvature_radius)
 import numpy as np
 from matplotlib import pyplot as plt
+from collections import OrderedDict
 
-def calc_well_path(data, initial_pos = [0,0,0], method = "min_curvature_radius", display=False):
+def calc_well_path(data, initial_pos = [0,0,0], target=np.deg2rad(0), method = "min_curvature_radius", display=False):
     data = np.array(data)
     methods = {"min_curvature_radius": min_curvature_radius.calc_segment,
                 "mean_angle": mean_angle.calc_segment,
@@ -24,9 +25,10 @@ def calc_well_path(data, initial_pos = [0,0,0], method = "min_curvature_radius",
     path[:,0] = initial_pos[0] + np.cumsum(path[:,0])  # Northing
     path[:,1] = initial_pos[1] + np.cumsum(path[:,1])  # Easting
     path[:,2] = initial_pos[2] + np.cumsum(path[:,2])  # Vertical
-    path[:,3] = reach0 + np.sqrt(np.cumsum(path[:,3]))  # Reach
+    path[:,3] = reach0 + np.cumsum(path[:,3])  # Reach
+    print("reach0:", path[:,3])
     if display is True:
-        data_print = {}
+        data_print = OrderedDict()
         for i, (dx, dy, dz, dA, DLS) in enumerate(segments, 1):
             real_path = path[i-1]
             data_print[f"Segment {i}"] = {
@@ -37,7 +39,8 @@ def calc_well_path(data, initial_pos = [0,0,0], method = "min_curvature_radius",
                 "N": np.round(real_path[0],3),
                 "E": np.round(real_path[1],3),
                 "TVD": np.round(real_path[2],3),
-                "Reach": np.round(real_path[3],3),
+                "Absolute Reach": np.round(real_path[3],3),
+                "Reach": np.round(real_path[3]*np.cos(target-data[i, 2]),3),
                 "Dogleg_Severity": np.round(DLS,3)
 
             }
